@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_teste/myhomepage_bloc.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -10,13 +11,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   
-  int _counter = 0;
-
-  void _incrementCounter(){
-    setState(() {
-      _counter++;
-    });
-  }
+  MyHomePageBloc bloc = MyHomePageBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +23,22 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('precione o botão varias vezes:',
+              Text('precione o botão para adicionar:',
               ),
-              Text(
-                '$_counter',
-                  style: Theme.of(context).textTheme.display1,
-              ),
+              StreamBuilder(
+                stream: bloc.output,
+                builder: (context, snapshot) {
+                return Text(
+                  '${bloc.counter}',
+                    style: Theme.of(context).textTheme.display1,
+                );
+              }
+             ),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
+          onPressed: bloc.incrementCounter,
           tooltip: 'Increment',
           child: Icon(Icons.add),
         ),
